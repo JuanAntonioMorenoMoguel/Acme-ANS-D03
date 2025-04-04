@@ -15,7 +15,8 @@ import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.ValidMoney;
 import acme.client.components.validation.ValidString;
 import acme.client.helpers.SpringHelper;
-import acme.features.authenticated.manager.leg.ManagerLegRepository;
+import acme.constraints.ValidFlight;
+import acme.entities.leg.LegRepository;
 import acme.realms.Manager;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@ValidFlight
 public class Flight extends AbstractEntity {
 
 	// Serialisation version --------------------------------------------------
@@ -61,55 +63,44 @@ public class Flight extends AbstractEntity {
 	@ManyToOne(optional = true)
 	private Manager				manager;
 
+	// Derived attributes -----------------------------------------------------
 
-	@Transient
+
+	@Transient()
 	public Date getScheduledDeparture() {
-		Date result;
-		ManagerLegRepository repository = SpringHelper.getBean(ManagerLegRepository.class);
-		result = repository.findDepartureByFlightId(this.getId());
-
-		return result;
+		LegRepository repository = SpringHelper.getBean(LegRepository.class);
+		return repository.findFirstScheduledDeparture(this.getId()).orElse(null);
 	}
 
-	@Transient
+	@Transient()
 	public Date getScheduledArrival() {
-		Date result;
-		ManagerLegRepository repository = SpringHelper.getBean(ManagerLegRepository.class);
-		result = repository.findArrivalByFlightId(this.getId());
-
-		return result;
+		LegRepository repository = SpringHelper.getBean(LegRepository.class);
+		return repository.findLastScheduledArrival(this.getId()).orElse(null);
 	}
 
-	@Transient
+	@Transient()
 	public String getOriginCity() {
-		String result;
-		ManagerLegRepository repository = SpringHelper.getBean(ManagerLegRepository.class);
-		if (repository.findDestinationCityByFlightId(this.getId()).size() == 0)
-			return "NA";
-
-		result = repository.findOriginCityByFlightId(this.getId()).getFirst();
-
-		return result;
+		LegRepository repository = SpringHelper.getBean(LegRepository.class);
+		return repository.findFirstOriginCity(this.getId()).orElse("Desconocido");
 	}
 
-	@Transient
+	@Transient()
 	public String getDestinationCity() {
-		String result;
-		ManagerLegRepository repository = SpringHelper.getBean(ManagerLegRepository.class);
-		if (repository.findDestinationCityByFlightId(this.getId()).size() == 0)
-			return "NA";
-
-		result = repository.findDestinationCityByFlightId(this.getId()).getFirst();
-
-		return result;
+		LegRepository repository = SpringHelper.getBean(LegRepository.class);
+		return repository.findLastDestinationCity(this.getId()).orElse("Desconocido");
 	}
 
-	@Transient
-	public Integer getLayovers() {
-		Integer result;
-		ManagerLegRepository repository = SpringHelper.getBean(ManagerLegRepository.class);
-		result = repository.numberOfLayovers(this.getId());
+	@Transient()
+	public Integer getNumberOfLayovers() {
+		LegRepository repository = SpringHelper.getBean(LegRepository.class);
+		Integer layovers = repository.numberOfLavoyers(this.getId());
+		return layovers == null || layovers == 0 ? 0 : layovers - 1;
+	}
 
-		return result;
+	@Transient()
+	public String getLabel() {
+		String origin = this.getOriginCity();
+		String destination = this.getDestinationCity();
+		return origin + "-" + destination;
 	}
 }

@@ -35,6 +35,7 @@ user-account-manager-27,true,"UserIdentity{name: 'Juan', surname: 'Antonio', ema
 user-account-manager-28,true,"UserIdentity{name: 'Juan', surname: 'Antonio', email: 'juamormog@acme.com'}",manager28,manager28
 user-account-manager-29,true,"UserIdentity{name: 'Juan', surname: 'Antonio', email: 'juamormog@acme.com'}",manager29,manager29
 user-account-manager-30,true,"UserIdentity{name: 'Juan', surname: 'Antonio', email: 'juamormog@acme.com'}",manager30,manager30
+user-account-manager-31,true,"UserIdentity{name: 'Juan', surname: 'Antonio', email: 'juamormog@acme.com'}",manager31,manager31
 user-account-technician-01,true,"UserIdentity{name: 'Juan', surname: 'Suarez', email: 'juanito@acme.com'}",technician1,technician1
 user-account-technician-02,true,"UserIdentity{name: 'Isa', surname: 'Chanche', email: 'chabela@acme.com'}",technician2,technician2
 user-account-technician-03,true,"UserIdentity{name: 'Maria', surname: 'Rui', email: 'meryy@acme.com'}",technician3,technician3

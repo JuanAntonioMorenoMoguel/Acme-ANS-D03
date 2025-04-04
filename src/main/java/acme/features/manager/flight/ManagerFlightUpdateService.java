@@ -1,5 +1,5 @@
 
-package acme.features.authenticated.manager.flight;
+package acme.features.manager.flight;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +10,7 @@ import acme.entities.flight.Flight;
 import acme.realms.Manager;
 
 @GuiService
-public class ManagerFlightCreateService extends AbstractGuiService<Manager, Flight> {
+public class ManagerFlightUpdateService extends AbstractGuiService<Manager, Flight> {
 
 	@Autowired
 	private ManagerFlightRepository repository;
@@ -18,24 +18,30 @@ public class ManagerFlightCreateService extends AbstractGuiService<Manager, Flig
 
 	@Override
 	public void authorise() {
-		super.getResponse().setAuthorised(super.getRequest().getPrincipal().getActiveRealm().getClass().equals(Manager.class));
+		Flight object;
+		int id;
+
+		id = super.getRequest().getData("id", int.class);
+		object = this.repository.findFlightById(id);
+		Manager manager = object == null ? null : object.getManager();
+		boolean status = object != null && object.getDraftMode() && super.getRequest().getPrincipal().hasRealm(manager);
+
+		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
 	public void load() {
 		Flight flight;
+		int id;
+		id = super.getRequest().getData("id", int.class);
+		flight = this.repository.findFlightById(id);
 
-		flight = new Flight();
-
-		flight.setManager((Manager) super.getRequest().getPrincipal().getActiveRealm());
-		flight.setDraftMode(true);
 		super.getBuffer().addData(flight);
 	}
 
 	@Override
 	public void bind(final Flight flight) {
 		assert flight != null;
-
 		super.bindObject(flight, "tag", "requiresSelfTransfer", "cost", "description");
 	}
 
@@ -56,6 +62,7 @@ public class ManagerFlightCreateService extends AbstractGuiService<Manager, Flig
 	@Override
 	public void perform(final Flight flight) {
 		assert flight != null;
+
 		this.repository.save(flight);
 	}
 
@@ -65,6 +72,16 @@ public class ManagerFlightCreateService extends AbstractGuiService<Manager, Flig
 
 		Dataset dataset;
 		dataset = super.unbindObject(flight, "tag", "requiresSelfTransfer", "cost", "description", "draftMode");
+		dataset.put("scheduledDeparture", flight.getScheduledDeparture());
+		dataset.put("scheduledArrival", flight.getScheduledArrival());
+		dataset.put("originCity", flight.getOriginCity());
+		dataset.put("destinationCity", flight.getDestinationCity());
+		dataset.put("layovers", flight.getNumberOfLayovers());
+
+		if (flight.getScheduledDeparture() == null)
+			dataset.put("scheduledDeparture", "NA");
+		if (flight.getScheduledArrival() == null)
+			dataset.put("scheduledArrival", "NA");
 
 		super.getResponse().addData(dataset);
 	}

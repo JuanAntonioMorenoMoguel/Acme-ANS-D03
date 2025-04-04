@@ -1,5 +1,5 @@
 
-package acme.features.authenticated.manager.leg;
+package acme.features.manager.leg;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import acme.client.components.models.Dataset;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
 import acme.entities.leg.Leg;
-import acme.features.authenticated.manager.flight.ManagerFlightRepository;
+import acme.features.manager.flight.ManagerFlightRepository;
 import acme.realms.Manager;
 
 @GuiService

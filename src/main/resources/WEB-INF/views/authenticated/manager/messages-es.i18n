@@ -1,0 +1,9 @@
+authenticated.manager.form.title = Perfil de manager
+
+authenticated.manager.form.label.identifier = Identificador
+authenticated.manager.form.label.experience = Experiencia (años)
+authenticated.manager.form.label.birthDate = Fecha de nacimiento
+authenticated.manager.form.label.pictureLink = Enlace de imagen
+
+authenticated.manager.form.button.create = Convertirse en Manager
+authenticated.manager.form.button.update = Actualizar perfil de Manager

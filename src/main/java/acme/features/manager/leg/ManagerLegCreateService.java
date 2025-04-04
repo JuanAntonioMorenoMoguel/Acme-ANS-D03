@@ -1,5 +1,5 @@
 
-package acme.features.authenticated.manager.leg;
+package acme.features.manager.leg;
 
 import java.util.List;
 
@@ -9,12 +9,13 @@ import acme.client.components.models.Dataset;
 import acme.client.components.views.SelectChoices;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
+import acme.entities.flight.Flight;
 import acme.entities.leg.Leg;
 import acme.entities.leg.LegStatus;
 import acme.realms.Manager;
 
 @GuiService
-public class ManagerLegUpdateService extends AbstractGuiService<Manager, Leg> {
+public class ManagerLegCreateService extends AbstractGuiService<Manager, Leg> {
 
 	@Autowired
 	private ManagerLegRepository repository;
@@ -22,24 +23,19 @@ public class ManagerLegUpdateService extends AbstractGuiService<Manager, Leg> {
 
 	@Override
 	public void authorise() {
-		Leg object;
-		int id;
-
-		id = super.getRequest().getData("id", int.class);
-		object = this.repository.findLegById(id);
-
-		Manager manager = object == null ? null : object.getManager();
-		boolean allowed = object != null && super.getRequest().getPrincipal().hasRealm(manager);
-
-		super.getResponse().setAuthorised(allowed);
+		super.getResponse().setAuthorised(super.getRequest().getPrincipal().getActiveRealm().getClass().equals(Manager.class));
 	}
 
 	@Override
 	public void load() {
-		Leg leg;
+		int flightId = super.getRequest().getData("flightId", int.class);
+		Flight flight = this.repository.findFlightById(flightId);
+		Manager manager = (Manager) super.getRequest().getPrincipal().getActiveRealm();
 
-		leg = this.repository.findLegById(super.getRequest().getData("id", int.class));
-
+		Leg leg = new Leg();
+		leg.setFlight(flight);
+		leg.setDraftMode(true);
+		leg.setManager(manager);
 		super.getBuffer().addData(leg);
 	}
 
@@ -47,22 +43,24 @@ public class ManagerLegUpdateService extends AbstractGuiService<Manager, Leg> {
 	public void bind(final Leg leg) {
 		assert leg != null;
 
-		super.bindObject(leg, "flightNumber", "scheduledDeparture", "scheduledArrival", "departureAirport", "arrivalAirport", "aircraft");
-		leg.setDraftMode(true);
+		super.bindObject(leg, "flightNumber", "scheduledDeparture", "scheduledArrival", "status", "departureAirport", "arrivalAirport", "aircraft");
 	}
 
 	@Override
 	public void validate(final Leg leg) {
 		assert leg != null;
+		if (!this.getBuffer().getErrors().hasErrors("arrivalAirport") && leg.getArrivalAirport() != null)
+			super.state(leg.getArrivalAirport() != leg.getDepartureAirport(), "arrivalAirport", "manager.flight.form.error.same-Airports", leg);
+
 	}
 
 	@Override
 	public void perform(final Leg leg) {
 		assert leg != null;
-		int id = leg.getFlight().getId();
+		int flightId = super.getRequest().getData("flightId", int.class);
 
 		// Si hay ya un aircraft asignado a otro leg del mismo vuelo se queda ese aircraft
-		List<Leg> legsFromFlight = this.repository.findLegsByFlight(id);
+		List<Leg> legsFromFlight = this.repository.findLegsByFlight(flightId);
 		if (legsFromFlight.size() > 0)
 			leg.setAircraft(legsFromFlight.get(0).getAircraft());
 
@@ -74,7 +72,7 @@ public class ManagerLegUpdateService extends AbstractGuiService<Manager, Leg> {
 		assert leg != null;
 
 		Dataset dataset;
-		dataset = super.unbindObject(leg, "flightNumber", "scheduledDeparture", "scheduledArrival", "departureAirport", "arrivalAirport", "draftMode");
+		dataset = super.unbindObject(leg, "flightNumber", "scheduledDeparture", "scheduledArrival", "departureAirport", "arrivalAirport", "flight", "draftMode");
 
 		SelectChoices choices = SelectChoices.from(LegStatus.class, leg.getStatus());
 		SelectChoices aircraftChoices = SelectChoices.from(this.repository.findAllAircraft(), "registrationNumber", leg.getAircraft());
@@ -83,6 +81,7 @@ public class ManagerLegUpdateService extends AbstractGuiService<Manager, Leg> {
 		dataset.put("choices", choices);
 		dataset.put("legStatus", leg.getStatus());
 		dataset.put("aircraftChoices", aircraftChoices);
+		dataset.put("flightId", leg.getFlight().getId());
 		dataset.put("airportChoices", airportChoices);
 
 		super.getResponse().addData(dataset);

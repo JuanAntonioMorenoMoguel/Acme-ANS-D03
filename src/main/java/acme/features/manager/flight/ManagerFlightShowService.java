@@ -1,5 +1,5 @@
 
-package acme.features.authenticated.manager.flight;
+package acme.features.manager.flight;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -54,7 +54,7 @@ public class ManagerFlightShowService extends AbstractGuiService<Manager, Flight
 		dataset.put("scheduledArrival", flight.getScheduledArrival());
 		dataset.put("originCity", flight.getOriginCity());
 		dataset.put("destinationCity", flight.getDestinationCity());
-		dataset.put("layovers", flight.getLayovers());
+		dataset.put("layovers", flight.getNumberOfLayovers());
 
 		if (flight.getScheduledDeparture() == null)
 			dataset.put("scheduledDeparture", "NA");
