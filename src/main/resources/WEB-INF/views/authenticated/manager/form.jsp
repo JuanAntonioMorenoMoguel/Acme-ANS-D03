@@ -4,9 +4,9 @@
 
 <acme:form>
     <acme:input-textbox code="authenticated.manager.form.label.identifier" path="idNumber"/>
-    <acme:input-textbox code="authenticated.manager.form.label.experience" path="experience"/>
-    <acme:input-moment code="authenticated.manager.form.label.birthDate" path="birthDate"/>
-    <acme:input-url code="authenticated.manager.form.label.pictureLink" path="pictureLink"/>
+    <acme:input-textbox code="authenticated.manager.form.label.experience" path="xpYears"/>
+    <acme:input-moment code="authenticated.manager.form.label.birthDate" path="dateOfBirth"/>
+    <acme:input-url code="authenticated.manager.form.label.pictureLink" path="linkToPicture"/>
 
     <jstl:choose>
         <jstl:when test="${_command == 'create'}">

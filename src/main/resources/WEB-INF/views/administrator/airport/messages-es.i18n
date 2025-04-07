@@ -33,6 +33,7 @@ administrator.form.label.address = Dirección
 administrator.form.label.email = Correo
 administrator.form.label.phoneNumber = Número de teléfono
 administrator.aiport.form.label.confirm = Confirmar
+administrator.airport.form.error.duplicated = codigo IATA duplicado
 
 administrator.airport.form.error.noOperationalScope = No se ha seleccionado un alcance operativo
 administrator.airport.form.error.city = La ciudad debe tener 50 caracteres o menos

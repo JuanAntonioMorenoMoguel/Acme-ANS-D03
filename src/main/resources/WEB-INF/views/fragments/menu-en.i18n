@@ -66,6 +66,7 @@ master.menu.customer.list-booking-records = My Booking Records
 
 master.menu.manager = Manager
 master.menu.manager.list-flights = Flights List
+master.menu.manager.dashboard = Dashboard
 
 # master.menu.user-account ####################################################
 
@@ -78,6 +79,8 @@ master.menu.user-account.consumer-profile = Consumer profile
 master.menu.user-account.become-technician = Become a Technician
 master.menu.user-account.technician-profile = Technician profile
 
+master.menu.user-account.become-manager = Become manager
+master.menu.user-account.manager-profile = Manager profile 
 
 master.menu.user-account.become-assistance-agent = Become an Assistance Agent
 master.menu.user-account.assistance-agent-agent-profile = Assistance Agent profile

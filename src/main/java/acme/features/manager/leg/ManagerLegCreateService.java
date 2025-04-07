@@ -43,12 +43,16 @@ public class ManagerLegCreateService extends AbstractGuiService<Manager, Leg> {
 	public void bind(final Leg leg) {
 		assert leg != null;
 
-		super.bindObject(leg, "flightNumber", "scheduledDeparture", "scheduledArrival", "status", "departureAirport", "arrivalAirport", "aircraft");
+		LegStatus legStatus = super.getRequest().getData("legStatus", LegStatus.class);
+		leg.setStatus(legStatus);
+		super.bindObject(leg, "flightNumber", "scheduledDeparture", "scheduledArrival", "departureAirport", "arrivalAirport", "aircraft");
 	}
 
 	@Override
 	public void validate(final Leg leg) {
 		assert leg != null;
+		boolean publishedFlight = leg.getFlight().getDraftMode();
+		super.state(!publishedFlight, "*", "manager.flight.form.error.published-flight", leg);
 		if (!this.getBuffer().getErrors().hasErrors("arrivalAirport") && leg.getArrivalAirport() != null)
 			super.state(leg.getArrivalAirport() != leg.getDepartureAirport(), "arrivalAirport", "manager.flight.form.error.same-Airports", leg);
 

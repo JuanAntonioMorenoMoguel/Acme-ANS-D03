@@ -23,6 +23,8 @@ manager.form.label.draftMode = Draft Mode
 manager.leg.list.label.draftMode = Draft Mode
 airline-manager.leg.form.label.duration = Duration
 
+manager.flight.form.error.published-flight = The flight from this leg is already published
+
 manager.leg.form.button.update = Update Leg
 manager.leg.form.button.publish = Publish Leg
 manager.leg.form.button.delete = Delete Leg

@@ -24,6 +24,7 @@ administrator.form.label.email = Email
 administrator.form.label.address = Address
 administrator.form.label.phoneNumber = Phone Number
 administrator.aiport.form.label.confirm = confirm
+administrator.airport.form.error.duplicated = Duplicated IATA code
 
 administrator.airport.form.error.noOperationalScope = There is no operational scope selected
 administrator.airport.form.error.city = City must be 50 characters or lower

@@ -9,4 +9,6 @@
 	<acme:list-column code = "manager.leg.list.label.scheduledDeparture" path ="scheduledDeparture" width="40%"/>
 	<acme:list-column code = "manager.leg.list.label.draftMode" path ="draftMode" width="20%"/>
 </acme:list>
-<acme:button code="manager.leg.form.button.create" action="/manager/leg/create?flightId=${flightId}"/>
+<jstl:if test = "${publishedFlight}">
+	<acme:button code="manager.leg.form.button.create" action="/manager/leg/create?flightId=${flightId}"/>
+</jstl:if>

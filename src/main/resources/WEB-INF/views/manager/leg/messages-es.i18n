@@ -28,6 +28,7 @@ manager.leg.form.button.publish = Publicar Tramo
 manager.leg.form.button.delete = Eliminar Tramo
 manager.leg.form.button.create = Crear Tramo
 
+manager.flight.form.error.published-flight = El vuelo de este tramo ya esta publicado
 manager.leg.form.error.flightNumber = El número de vuelo debe seguir el formato AAA9999.
 manager.leg.form.error.scheduledDeparture = La salida programada debe ser en el futuro.
 manager.leg.form.error.scheduledArrival = La llegada programada debe ser en el futuro.

@@ -53,6 +53,7 @@ public class ManagerFlightPublishService extends AbstractGuiService<Manager, Fli
 	public void validate(final Flight flight) {
 		assert flight != null;
 
+		super.state(!flight.getDraftMode(), "*", "manager.flight.form.error.draftMode", flight);
 		super.state(flight.getNumberOfLayovers() > 0, "layovers", "manager.flight.form.error.layovers", flight);
 
 		// Todos los legs deben estar publicados

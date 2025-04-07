@@ -65,7 +65,9 @@ public class AdministratorAirportUpdateService extends AbstractGuiService<Admini
 			Airport airportdup;
 
 			airportdup = this.repository.findAirportByIataCode(airport.getIataCode());
-			super.state(airportdup == null, "iataCode", "administrator.airport.form.error.duplicated");
+			if (airportdup == null) {
+			} else
+				super.state(airportdup.getId() == airport.getId(), "iataCode", "administrator.airport.form.error.duplicated");
 		}
 
 		if (!this.getBuffer().getErrors().hasErrors("operationalScope"))

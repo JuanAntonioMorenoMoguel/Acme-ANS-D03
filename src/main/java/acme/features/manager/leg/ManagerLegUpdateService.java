@@ -46,6 +46,8 @@ public class ManagerLegUpdateService extends AbstractGuiService<Manager, Leg> {
 	@Override
 	public void bind(final Leg leg) {
 		assert leg != null;
+		LegStatus legStatus = super.getRequest().getData("legStatus", LegStatus.class);
+		leg.setStatus(legStatus);
 
 		super.bindObject(leg, "flightNumber", "scheduledDeparture", "scheduledArrival", "departureAirport", "arrivalAirport", "aircraft");
 		leg.setDraftMode(true);

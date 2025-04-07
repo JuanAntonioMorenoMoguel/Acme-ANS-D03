@@ -15,7 +15,7 @@
 	
 		<jstl:when test="${acme:anyOf(_command,'show|update|publish|delete')}">
 			<acme:input-textbox code="manager.form.label.tag" path="tag"/>
-			<acme:input-textbox code="manager.form.label.requiresSelfTransfer" path="requiresSelfTransfer"/>
+			<acme:input-checkbox code="manager.form.label.requiresSelfTransfer" path="requiresSelfTransfer"/>
 			<acme:input-textbox code="manager.form.label.cost" path="cost"/>
 			<acme:input-textbox code="manager.form.label.description" path="description"/>
 			<acme:input-textbox code="manager.form.label.scheduledDeparture" path="scheduledDeparture" readonly="true"/>

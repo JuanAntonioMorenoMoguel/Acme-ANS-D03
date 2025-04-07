@@ -43,8 +43,8 @@ public class ManagerLegPublishService extends AbstractGuiService<Manager, Leg> {
 	}
 
 	@Override
-	public void bind(final Leg object) {
-		assert object != null;
+	public void bind(final Leg leg) {
+		assert leg != null;
 	}
 
 	@Override
